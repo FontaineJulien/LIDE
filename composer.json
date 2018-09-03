@@ -18,6 +18,7 @@
     },
     "require": {
         "php": ">=5.3.9",
+        "ext-ssh2": "1.1.2",
         "doctrine/doctrine-bundle": "~1.4",
         "doctrine/orm": "^2.4.8",
         "friendsofsymfony/user-bundle": "~1.3",
