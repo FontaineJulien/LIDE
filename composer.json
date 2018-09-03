@@ -20,6 +20,7 @@
         "php": ">=7.0",
         "ext-ssh2": "1.1.2",
         "doctrine/doctrine-bundle": "~1.4",
+        "ext-json": ">=1.6",
         "doctrine/orm": "^2.4.8",
         "friendsofsymfony/user-bundle": "~1.3",
         "gos/web-socket-bundle": "^1.8",
