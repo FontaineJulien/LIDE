@@ -6,6 +6,8 @@
  */
 namespace MainBundle\Entity;
 
+use Symfony\Component\HttpFoundation\File\File;
+
 class Execution{
 
   protected $files; //À partir du JSON générer par le JavaScript, on obtient un tableau de tableau, T[i]['name'] pour le nom, T[i]['content'] pour le contenu du fichier i
@@ -87,7 +89,7 @@ class Execution{
   }
 
     /**
-     * @return mixed
+     * @return File[]
      */
     public function getAdditionalFiles()
     {

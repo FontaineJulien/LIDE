@@ -31,7 +31,10 @@ parameters:
     docker_memory: 10M
     #Nombre de cpu max à utiliser
     docker_cpu : 1
+    add_hosts: 'domain.com:127.0.0.1'
+    docker_name_prefix: 'lide_'
 
     mails_suffixe: 
         - etud.univ-angers.fr
         - univ-angers.fr
+

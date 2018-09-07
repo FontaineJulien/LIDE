@@ -2,9 +2,8 @@
 
 namespace MainBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use MainBundle\Entity\Langage;
-use MainBundle\Entity\DetailLangage;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use MainBundle\Entity\Execution;
 use MainBundle\Form\ExecutionType;
@@ -13,8 +12,6 @@ use MainBundle\Form\OptionsInterfaceType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
-
-use Psr\Log\LoggerInterface;
 
 class DefaultController extends Controller
 {
@@ -42,6 +39,11 @@ class DefaultController extends Controller
         }
     }
 
+    /**
+     * Create the IDE page
+     * @param Request $request
+     * @return Response
+     */
     public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
@@ -60,7 +62,9 @@ class DefaultController extends Controller
         // Récupération du langage
         $langageID = $request->getSession()->get('langage'.$user->getId());
         if ($langageID == null) {
-            $selected_langage = $em->getRepository('MainBundle:Langage')->findOneBy(array('actif' => true));
+            //if no langage specified take the first in database
+            /** @var Langage $selected_langage */
+            $selected_langage = $langages[0];
             $langageID = $selected_langage->getId();
         }
         $langage = $em->getRepository('MainBundle:Langage')->find($langageID);
@@ -70,22 +74,23 @@ class DefaultController extends Controller
         // Création du formulaire d'exécution
         $exec = new Execution();
         $exec->setCompilationOptions($langage->getOptions());
-        $form = $this->createform(ExecutionType::class, $exec);
+        $formExecution = $this->createform(ExecutionType::class, $exec);
 
         return $this->render('MainBundle:Default:index.html.twig', array(
             'list_langage' => $langages,
             'selected_langage_name' => $info['name'],
-            'form' => $form->createView(),
+            'form' => $formExecution->createView(),
             'formInterface' => $formInterface->createView(),
             'jsonFiles' => json_encode($jsonFiles),
             'langage' => $langageID
         ));
     }
 
-    /* Méthode appelé lors d'un changement de langage
-     *
+    /**
+     * Retrieve information about the language with the given id
+     * @param $id
+     * @return array
      */
-
     private function getLanguageInfo($id)
     {
         $em = $this->getDoctrine()->getManager();
@@ -96,10 +101,12 @@ class DefaultController extends Controller
         $compilateur = $lang->getCompilateur();
         $options = $lang->getOptions();
 
+        /** @noinspection PhpUndefinedMethodInspection */
         $details = $em->getRepository('MainBundle:DetailLangage')->findByLangage($id);
 
         $detailThatMatter = array();
         foreach ($details as $d) {
+            /** @noinspection PhpUndefinedMethodInspection */
             $detailThatMatter[] = array(
                 'ext' => $d->getExtension(),
                 'model' => $d->getModele()
@@ -122,6 +129,8 @@ class DefaultController extends Controller
      * Renvoie les info du langage sous forme d'un json contenant
      *   'ace' -> paramètre pour l'editeur
      *   'model' -> fichier modèle pour le langage
+     * @param Request $request
+     * @return JsonResponse|Response
      */
     public function languageInfoAction(Request $request)
     {        
@@ -134,6 +143,11 @@ class DefaultController extends Controller
         return new Response('This is not ajax!', 400);
     }
 
+    /**
+     * Save the user's files in session
+     * @param Request $request
+     * @return JsonResponse|Response
+     */
     public function saveCodeAction(Request $request)
     {
         if ($request->isXMLHttpRequest()) {
@@ -150,6 +164,11 @@ class DefaultController extends Controller
         return new Response('This is not ajax!', 400);
     }
 
+    /**
+     * Save the user interface configuration in database
+     * @param Request $request
+     * @return JsonResponse|Response
+     */
     public function updateInterfaceAction(Request $request)
     {
         if ($request->isXMLHttpRequest()) {

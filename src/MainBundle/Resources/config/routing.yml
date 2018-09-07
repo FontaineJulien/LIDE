@@ -8,11 +8,11 @@ language_info:
     
 save_code:
     path:    /save_code
-    defaults: {_controller : MainBundle:Default:saveCode }
+    defaults: {_controller : MainBundle:User:saveCode }
 
 update_interface:
     path:    /update_interface
-    defaults: {_controller : MainBundle:Default:updateInterface }
+    defaults: {_controller : MainBundle:User:updateInterface }
     
 exec:
     path:    /exec

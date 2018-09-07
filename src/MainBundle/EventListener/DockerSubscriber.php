@@ -5,14 +5,14 @@ namespace MainBundle\EventListener;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use MainBundle\Entity\Langage;
-use MainBundle\Services\GestionSSH;
+use MainBundle\Services\SshConnectionHandler;
 
 class DockerSubscriber implements EventSubscriber
 {
     /** var GestionSSH */
     private $srvSSH;
 
-    public function __construct(GestionSSH $ssh)
+    public function __construct(SshConnectionHandler $ssh)
     {
         $this->srvSSH = $ssh;
     }
