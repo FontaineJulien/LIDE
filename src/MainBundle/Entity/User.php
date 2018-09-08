@@ -26,24 +26,6 @@ class User extends BaseUser
     protected $email;
 
     /**
-     * var $aceTheme
-     * @ORM\Column(type="string")
-     */
-    protected $aceTheme = "tomorrow_night"; // to be removed
-
-    /**
-     * var $consoleTheme
-     * @ORM\Column(type="string")
-     */
-    protected $consoleTheme = "dark"; // To be removed
-
-    /**
-     * var $sizeEditeur
-     * @ORM\Column(type="integer")
-     */
-    protected $sizeEditeur = 12; //To be removed
-
-    /**
      * var $configuration
      * @ORM\Column(type="json_array")
      */
@@ -85,32 +67,32 @@ class User extends BaseUser
 
     public function getAceTheme()
     {
-        return $this->aceTheme;
+        return $this->configuration['editorTheme'];
     }
 
     public function setAceTheme($aceTheme)
     {
-        $this->aceTheme = $aceTheme;
+        $this->configuration['editorTheme'] = $aceTheme;
     }  
 
     public function getConsoleTheme()
     {
-        return $this->consoleTheme;
+        return $this->configuration['consoleTheme'];
     }
 
     public function setConsoleTheme($consoleTheme)
     {
-        $this->consoleTheme = $consoleTheme;
+        $this->configuration['consoleTheme'] = $consoleTheme;
     }  
 
     public function getSizeEditeur()
     {
-        return $this->sizeEditeur;
+        return $this->configuration['editorFontSize'];
     }
 
-    public function setSizeEditeur($sizeEditeur)
+    public function setSizeEditeur($editorFontSize)
     {
-        $this->sizeEditeur = $sizeEditeur;
+        $this->configuration['editorFontSize'] = $editorFontSize;
     }
 
     /**
@@ -122,7 +104,7 @@ class User extends BaseUser
     }
 
     /**
-     * @param mixed $configuration
+     * @param array $configuration
      */
     public function setConfiguration($configuration)
     {
